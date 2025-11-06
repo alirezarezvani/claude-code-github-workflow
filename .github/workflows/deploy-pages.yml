@@ -83,7 +83,7 @@ jobs:
           ls -lh docs/.vitepress/dist/assets/ | head -5
 
       - name: Setup GitHub Pages
-        uses: actions/configure-pages@v4
+        uses: actions/configure-pages@v5
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
