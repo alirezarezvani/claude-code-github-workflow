@@ -5,7 +5,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![GitHub Actions](https://img.shields.io/badge/GitHub%20Actions-Ready-blue)](https://github.com/features/actions)
 [![Claude Code](https://img.shields.io/badge/Claude%20Code-v1%20GA-purple)](https://docs.anthropic.com/claude/docs/github-actions)
-[![Version](https://img.shields.io/badge/version-1.0.0-green.svg)](https://github.com/yourusername/claudecode-github-bluprint)
+[![Version](https://img.shields.io/badge/version-1.0.0-green.svg)](https://github.com/alirezarezvani/claudecode-github-bluprint)
 [![Phase](https://img.shields.io/badge/Phase-2%20Complete-success.svg)]()
 
 > Transform your development workflow from planning to deployment in under 5 minutes. A comprehensive, production-ready blueprint that combines GitHub Actions with Claude Code for intelligent, automated workflows.
@@ -23,7 +23,7 @@ This repository provides a **complete, copy-paste blueprint** for automating you
 ## ✨ Key Features
 
 - **🤖 8 Intelligent Slash Commands** - Automate recurring tasks with simple commands (`/commit-smart`, `/create-pr`, `/review-pr`, etc.)
-- **⚡ 8 GitHub Actions Workflows** - Complete CI/CD pipeline from planning to deployment
+- **⚡  8 GitHub Actions Workflows** - Complete CI/CD pipeline from planning to deployment
 - **🧠 4 Autonomous Agents** - AI-powered agents handle complex tasks automatically
 - **📊 Project Board Integration** - Bidirectional sync with GitHub Projects v2
 - **🔒 Security-First Design** - Built-in secret scanning, rate limiting, and fork safety
@@ -41,7 +41,7 @@ Get up and running in 3 commands:
 
 ```bash
 # 1. Clone this blueprint into your project
-git clone https://github.com/yourusername/claudecode-github-bluprint.git .github-blueprint
+git clone https://github.com/alirezarezvani/claudecode-github-bluprint.git .github-blueprint
 cd .github-blueprint
 
 # 2. Run the interactive setup wizard
@@ -349,7 +349,7 @@ And provides:
 
 ---
 
-## 📈 Project Status
+## Project Status
 
 - **Phase 1**: ✅ Complete (19 files - Workflows + Composites + Templates)
 - **Phase 2**: ✅ Complete (12 files - Slash Commands + Agents)
@@ -359,7 +359,7 @@ And provides:
 
 ---
 
-## 📈 Roadmap
+## Roadmap
 
 - [ ] Support for GitLab CI/CD
 - [ ] Integration with Jira and Linear
@@ -371,7 +371,7 @@ And provides:
 
 ---
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - **Anthropic** - For Claude Code and the powerful Claude API
 - **GitHub** - For GitHub Actions and Projects v2
@@ -379,11 +379,11 @@ And provides:
 
 ---
 
-## 📞 Contact
+## Connect
 
-- **Project Repository**: [github.com/yourusername/claudecode-github-bluprint](https://github.com/yourusername/claudecode-github-bluprint)
-- **Issues**: [github.com/yourusername/claudecode-github-bluprint/issues](https://github.com/yourusername/claudecode-github-bluprint/issues)
-- **Discussions**: [github.com/yourusername/claudecode-github-bluprint/discussions](https://github.com/yourusername/claudecode-github-bluprint/discussions)
+- **Project Repository**: [github.com/alirezarezvani/claudecode-github-bluprint](https://github.com/alirezarezvani/claudecode-github-bluprint)
+- **Issues**: [github.com/alirezarezvani/claudecode-github-bluprint/issues](https://github.com/alirezarezvani/claudecode-github-bluprint/issues)
+- **Discussions**: [github.com/alirezarezvani/claudecode-github-bluprint/discussions](https://github.com/alirezarezvani/claudecode-github-bluprint/discussions)
 
 ---
 
