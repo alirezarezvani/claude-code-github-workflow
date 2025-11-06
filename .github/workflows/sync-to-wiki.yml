@@ -164,7 +164,7 @@ jobs:
           find wiki -name "*.md" -type f | sort
 
       - name: Publish to GitHub Wiki
-        uses: Andrew-Chen-Wang/github-wiki-action@v4
+        uses: Andrew-Chen-Wang/github-wiki-action@v5
         env:
           WIKI_DIR: wiki/
           GH_TOKEN: ${{ secrets.PROJECTS_TOKEN }}
