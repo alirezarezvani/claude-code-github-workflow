@@ -1,5 +1,5 @@
 {
-  "name": "claudecode-github-bluprint",
+  "name": "claude-code-github-workflow",
   "version": "1.0.0",
   "description": "Production-ready GitHub Actions + Claude Code automation blueprint",
   "type": "module",

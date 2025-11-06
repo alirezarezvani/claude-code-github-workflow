@@ -123,8 +123,8 @@ Use the interactive wizard for quickest setup:
 
 ```bash
 # Clone blueprint
-git clone https://github.com/yourusername/claudecode-github-bluprint.git
-cd claudecode-github-bluprint
+git clone https://github.com/alirezarezvani/claude-code-github-workflow.git
+cd claude-code-github-workflow
 
 # Run wizard
 ./setup/wizard.sh
@@ -151,7 +151,7 @@ For full control over configuration:
 
 ```bash
 # Clone repository
-git clone https://github.com/yourusername/claudecode-github-bluprint.git blueprint
+git clone https://github.com/alirezarezvani/claude-code-github-workflow.git blueprint
 cd your-project
 
 # Copy workflow files

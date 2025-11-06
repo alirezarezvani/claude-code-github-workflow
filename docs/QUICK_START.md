@@ -45,14 +45,14 @@ Copy this blueprint into your project:
 ```bash
 # Option A: Add to existing repository
 cd your-project
-git clone https://github.com/yourusername/claudecode-github-bluprint.git .blueprint-temp
+git clone https://github.com/alirezarezvani/claude-code-github-workflow.git .blueprint-temp
 cp -r .blueprint-temp/.github/ .
 cp -r .blueprint-temp/.claude/ .
 cp -r .blueprint-temp/setup/ .
 rm -rf .blueprint-temp
 
 # Option B: Start new project with blueprint
-git clone https://github.com/yourusername/claudecode-github-bluprint.git my-project
+git clone https://github.com/alirezarezvani/claude-code-github-workflow.git my-project
 cd my-project
 ```
 

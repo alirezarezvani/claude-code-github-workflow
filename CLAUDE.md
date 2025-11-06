@@ -62,7 +62,7 @@ The following files are **REFERENCE ONLY** and provide context but are NOT the s
 ## 🏗️ Project Structure
 
 ```
-claudecode-github-bluprint/
+claude-code-github-workflow/
 ├── implementation.md          ← SOURCE OF TRUTH (PRD + Plan)
 ├── CLAUDE.md                  ← This file (project context)
 ├── README.md                  ← User-facing overview (to be created)

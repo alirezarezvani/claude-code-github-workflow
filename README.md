@@ -5,7 +5,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![GitHub Actions](https://img.shields.io/badge/GitHub%20Actions-Ready-blue)](https://github.com/features/actions)
 [![Claude Code](https://img.shields.io/badge/Claude%20Code-v1%20GA-purple)](https://docs.anthropic.com/claude/docs/github-actions)
-[![Version](https://img.shields.io/badge/version-1.0.0-green.svg)](https://github.com/alirezarezvani/claudecode-github-bluprint)
+[![Version](https://img.shields.io/badge/version-1.0.0-green.svg)](https://github.com/alirezarezvani/claude-code-github-workflow)
 [![Phase](https://img.shields.io/badge/Phase-2%20Complete-success.svg)]()
 
 > Transform your development workflow from planning to deployment in under 5 minutes. A comprehensive, production-ready blueprint that combines GitHub Actions with Claude Code for intelligent, automated workflows.
@@ -41,7 +41,7 @@ Get up and running in 3 commands:
 
 ```bash
 # 1. Clone this blueprint into your project
-git clone https://github.com/alirezarezvani/claudecode-github-bluprint.git .github-blueprint
+git clone https://github.com/alirezarezvani/claude-code-github-workflow.git .github-blueprint
 cd .github-blueprint
 
 # 2. Run the interactive setup wizard
@@ -209,8 +209,8 @@ Built-in protections ensure safe, reliable automation:
 
 ### 🌐 Documentation Sites
 
-**→ [📖 Full Documentation Site](https://rezarezvani.github.io/claudecode-github-bluprint/)** - Modern docs with search & navigation
-**→ [📝 GitHub Wiki](https://github.com/rezarezvani/claudecode-github-bluprint/wiki)** - Quick reference & community docs
+**→ [📖 Full Documentation Site](https://alirezarezvani.github.io/claude-code-github-workflow/)** - Modern docs with search & navigation
+**→ [📝 GitHub Wiki](https://github.com/alirezarezvani/claude-code-github-workflow/wiki)** - Quick reference & community docs
 
 *Both sites auto-update from the [docs/](docs/) folder on every commit to main.*
 
@@ -390,9 +390,9 @@ And provides:
 
 ## Connect
 
-- **Project Repository**: [github.com/alirezarezvani/claudecode-github-bluprint](https://github.com/alirezarezvani/claudecode-github-bluprint)
-- **Issues**: [github.com/alirezarezvani/claudecode-github-bluprint/issues](https://github.com/alirezarezvani/claudecode-github-bluprint/issues)
-- **Discussions**: [github.com/alirezarezvani/claudecode-github-bluprint/discussions](https://github.com/alirezarezvani/claudecode-github-bluprint/discussions)
+- **Project Repository**: [github.com/alirezarezvani/claude-code-github-workflow](https://github.com/alirezarezvani/claude-code-github-workflow)
+- **Issues**: [github.com/alirezarezvani/claude-code-github-workflow/issues](https://github.com/alirezarezvani/claude-code-github-workflow/issues)
+- **Discussions**: [github.com/alirezarezvani/claude-code-github-workflow/discussions](https://github.com/alirezarezvani/claude-code-github-workflow/discussions)
 
 ---
 

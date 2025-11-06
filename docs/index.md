@@ -14,7 +14,7 @@ hero:
       link: /QUICK_START
     - theme: alt
       text: View on GitHub
-      link: https://github.com/rezarezvani/claudecode-github-bluprint
+      link: https://github.com/alirezarezvani/claude-code-github-workflow
 
 features:
   - icon: 🚀
@@ -127,14 +127,14 @@ features:
 
 ## Community
 
-- **[GitHub Repository](https://github.com/rezarezvani/claudecode-github-bluprint)** - Source code and examples
-- **[GitHub Wiki](https://github.com/rezarezvani/claudecode-github-bluprint/wiki)** - Quick reference documentation
-- **[Issues](https://github.com/rezarezvani/claudecode-github-bluprint/issues)** - Report bugs or request features
-- **[Discussions](https://github.com/rezarezvani/claudecode-github-bluprint/discussions)** - Community Q&A
+- **[GitHub Repository](https://github.com/alirezarezvani/claude-code-github-workflow)** - Source code and examples
+- **[GitHub Wiki](https://github.com/alirezarezvani/claude-code-github-workflow/wiki)** - Quick reference documentation
+- **[Issues](https://github.com/alirezarezvani/claude-code-github-workflow/issues)** - Report bugs or request features
+- **[Discussions](https://github.com/alirezarezvani/claude-code-github-workflow/discussions)** - Community Q&A
 
 ## License
 
-Released under the [MIT License](https://github.com/rezarezvani/claudecode-github-bluprint/blob/main/LICENSE).
+Released under the [MIT License](https://github.com/alirezarezvani/claude-code-github-workflow/blob/main/LICENSE).
 
 ---
 

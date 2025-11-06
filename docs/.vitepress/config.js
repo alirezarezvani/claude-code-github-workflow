@@ -7,7 +7,7 @@ export default defineConfig({
     'Production-ready GitHub Actions + Claude Code automation blueprint for developers of all skill levels',
 
   // Base path for GitHub Pages (use repo name)
-  base: '/claudecode-github-bluprint/',
+  base: '/claude-code-github-workflow/',
 
   // Clean URLs (remove .html extension)
   cleanUrls: true,
@@ -26,7 +26,7 @@ export default defineConfig({
 
   // Head tags for SEO and PWA
   head: [
-    ['link', { rel: 'icon', href: '/claudecode-github-bluprint/favicon.ico' }],
+    ['link', { rel: 'icon', href: '/claude-code-github-workflow/favicon.ico' }],
     [
       'meta',
       {
@@ -75,7 +75,7 @@ export default defineConfig({
           { text: 'Architecture', link: '/ARCHITECTURE' },
         ],
       },
-      { text: 'GitHub', link: 'https://github.com/rezarezvani/claudecode-github-bluprint' },
+      { text: 'GitHub', link: 'https://github.com/alirezarezvani/claude-code-github-workflow' },
     ],
 
     // Sidebar navigation
@@ -121,7 +121,7 @@ export default defineConfig({
     socialLinks: [
       {
         icon: 'github',
-        link: 'https://github.com/rezarezvani/claudecode-github-bluprint',
+        link: 'https://github.com/alirezarezvani/claude-code-github-workflow',
       },
     ],
 
@@ -134,7 +134,7 @@ export default defineConfig({
     // Edit link
     editLink: {
       pattern:
-        'https://github.com/rezarezvani/claudecode-github-bluprint/edit/main/docs/:path',
+        'https://github.com/alirezarezvani/claude-code-github-workflow/edit/main/docs/:path',
       text: 'Edit this page on GitHub',
     },
 
