@@ -1,0 +1,33 @@
+{
+  "name": "blueprint-fullstack-example",
+  "version": "1.0.0",
+  "description": "Minimal fullstack (MERN-style) example with GitHub Workflow Blueprint",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently \"pnpm --filter client dev\" \"pnpm --filter server dev\"",
+    "build": "pnpm --filter client build && pnpm --filter server build",
+    "start": "pnpm --filter server start",
+    "lint": "pnpm --filter client lint && pnpm --filter server lint",
+    "type-check": "pnpm --filter client type-check && pnpm --filter server type-check",
+    "test": "pnpm --filter client test && pnpm --filter server test",
+    "clean": "rm -rf client/dist client/node_modules server/dist server/node_modules node_modules"
+  },
+  "keywords": [
+    "github-actions",
+    "claude-code",
+    "blueprint",
+    "fullstack",
+    "mern",
+    "monorepo",
+    "react",
+    "express",
+    "typescript"
+  ],
+  "devDependencies": {
+    "concurrently": "^8.2.0"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=9.0.0"
+  }
+}

@@ -1,0 +1,88 @@
+{
+  "milestone": "Book Catalog Fullstack MVP",
+  "description": "Build a complete fullstack book catalog application with React frontend and Express backend demonstrating the GitHub Workflow Blueprint",
+  "tasks": [
+    {
+      "title": "Setup monorepo structure with client and server workspaces",
+      "description": "Configure pnpm workspace with React (Vite) frontend and Express backend.\n\n## Client Setup\n- React 18 + TypeScript + Vite\n- ESLint and Prettier configuration\n- Jest testing framework\n- Responsive CSS styling\n\n## Server Setup\n- Express + TypeScript\n- CORS middleware for client communication\n- In-memory data store (Book model)\n- Jest + Supertest for API testing\n\n## Workspace Configuration\n- pnpm-workspace.yaml defining client/ and server/\n- Root package.json with parallel dev scripts\n- Shared TypeScript configuration patterns\n- Coordinated build and test scripts",
+      "acceptanceCriteria": [
+        "Monorepo structure with client/ and server/ workspaces",
+        "pnpm install works from root and installs both workspaces",
+        "pnpm dev runs both client and server in parallel",
+        "TypeScript compiles without errors in both workspaces",
+        "Quality checks (lint, type-check) pass for both"
+      ],
+      "priority": "critical",
+      "type": "feature",
+      "platform": "fullstack",
+      "dependencies": []
+    },
+    {
+      "title": "Create Book REST API with CRUD operations",
+      "description": "Implement Express backend with complete Book API.\n\n## API Endpoints\n- GET /api/books - List all books\n- GET /api/books/:id - Get book by ID\n- POST /api/books - Create new book\n- PUT /api/books/:id - Update book\n- DELETE /api/books/:id - Delete book\n\n## Data Model\n- Book interface (id, title, author, year, genre, timestamps)\n- In-memory BookStore class with async methods\n- Sample seed data (3 programming books)\n\n## Validation & Error Handling\n- Request body validation\n- 400 for missing fields\n- 404 for not found resources\n- 500 for server errors\n\n## Testing\n- Supertest integration tests for all endpoints\n- Test CRUD operations and error cases\n- 90%+ coverage target",
+      "acceptanceCriteria": [
+        "All 5 REST endpoints implemented and working",
+        "Request validation rejects invalid data",
+        "Error responses include helpful messages",
+        "API tests pass with good coverage",
+        "CORS configured for frontend origin",
+        "Server runs on port 3001 by default"
+      ],
+      "priority": "high",
+      "type": "feature",
+      "platform": "fullstack",
+      "dependencies": [1]
+    },
+    {
+      "title": "Build React frontend with Book list and details",
+      "description": "Create responsive React UI to display books from API.\n\n## Components\n- App component with layout and routing logic\n- BookList component with grid display\n- BookCard component for individual books\n- Loading and error states\n\n## API Integration\n- Fetch books on component mount\n- Display loading spinner while fetching\n- Error handling with user-friendly messages\n- Vite proxy configuration for /api routes\n\n## Styling\n- Responsive CSS Grid layout\n- Mobile-first responsive design\n- Purple/indigo gradient theme matching blueprint\n- Card-based UI with hover effects\n\n## Testing\n- Jest + React Testing Library\n- Test rendering and API integration\n- Mock fetch for unit tests",
+      "acceptanceCriteria": [
+        "Books display in responsive grid layout",
+        "Loading state shows while fetching data",
+        "Error state displays on API failure",
+        "UI is mobile-responsive (works on all screen sizes)",
+        "Component tests pass",
+        "Vite proxy routes /api to backend"
+      ],
+      "priority": "high",
+      "type": "feature",
+      "platform": "fullstack",
+      "dependencies": [1, 2]
+    },
+    {
+      "title": "Add create and edit book forms with full CRUD UI",
+      "description": "Implement forms for creating and editing books with API integration.\n\n## Features\n- CreateBookForm component with all fields\n- EditBookForm component (pre-populated)\n- Form validation (client-side)\n- Submit handlers calling API endpoints\n- Success/error feedback to user\n- Modal or page-based form UI\n\n## API Integration\n- POST /api/books for creation\n- PUT /api/books/:id for updates\n- DELETE /api/books/:id with confirmation\n- Refresh book list after mutations\n\n## User Experience\n- Clear form labels and placeholders\n- Validation feedback before submit\n- Loading state during API calls\n- Success message on completion\n- Error handling with retry option\n\n## Testing\n- Form validation tests\n- Submit handler tests with mocked API\n- Integration tests for complete flows",
+      "acceptanceCriteria": [
+        "Can create new books via form",
+        "Can edit existing books",
+        "Can delete books with confirmation",
+        "Form validation works correctly",
+        "Loading states during API calls",
+        "Success/error messages display properly",
+        "Book list refreshes after mutations"
+      ],
+      "priority": "high",
+      "type": "feature",
+      "platform": "fullstack",
+      "dependencies": [2, 3]
+    },
+    {
+      "title": "Add search and filter functionality",
+      "description": "Implement client-side search and filtering for books.\n\n## Search Features\n- Search bar component in header\n- Real-time filtering (no API calls needed)\n- Search by title, author, or genre\n- Case-insensitive matching\n- Clear search button\n\n## Filter Options\n- Filter by genre (dropdown)\n- Sort by year (ascending/descending)\n- Sort by title (alphabetical)\n- Combine search and filters\n\n## UI/UX\n- Search results count display\n- Empty state when no results\n- Preserve filters in URL query params (optional)\n- Fast, responsive filtering (<100ms)\n\n## Testing\n- Search functionality tests\n- Filter and sort tests\n- Combined search + filter tests\n- Performance tests with large datasets",
+      "acceptanceCriteria": [
+        "Search filters books in real-time",
+        "Genre filter works correctly",
+        "Sort options work (year, title)",
+        "Search and filters can be combined",
+        "Results count updates accurately",
+        "Empty state shows when no matches",
+        "Fast, responsive performance",
+        "All features have test coverage"
+      ],
+      "priority": "medium",
+      "type": "feature",
+      "platform": "fullstack",
+      "dependencies": [3, 4]
+    }
+  ]
+}

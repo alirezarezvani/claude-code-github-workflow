@@ -1,0 +1,14 @@
+{
+  "title": "Setup monorepo structure with client and server workspaces",
+  "body": "## Description\n\nConfigure pnpm workspace with React (Vite) frontend and Express backend.\n\n## Client Setup\n- React 18 + TypeScript + Vite\n- ESLint and Prettier configuration\n- Jest testing framework\n- Responsive CSS styling\n\n## Server Setup\n- Express + TypeScript\n- CORS middleware for client communication\n- In-memory data store (Book model)\n- Jest + Supertest for API testing\n\n## Workspace Configuration\n- pnpm-workspace.yaml defining client/ and server/\n- Root package.json with parallel dev scripts\n- Shared TypeScript configuration patterns\n- Coordinated build and test scripts\n\n## Acceptance Criteria\n\n- [ ] Monorepo structure with client/ and server/ workspaces\n- [ ] pnpm install works from root and installs both workspaces\n- [ ] pnpm dev runs both client and server in parallel\n- [ ] TypeScript compiles without errors in both workspaces\n- [ ] Quality checks (lint, type-check) pass for both\n\n## Type\n\nFeature\n\n## Platform\n\nFullstack\n\n## Priority\n\nCritical\n\n---\n\n_Created by claude-plan-to-issues workflow_\n_Milestone: Book Catalog Fullstack MVP_",
+  "labels": [
+    "claude-code",
+    "status:ready",
+    "type:feature",
+    "platform:fullstack",
+    "priority:critical"
+  ],
+  "milestone": "Book Catalog Fullstack MVP",
+  "assignees": [],
+  "projects": ["Book Catalog Fullstack MVP"]
+}
