@@ -1,0 +1,86 @@
+{
+  "milestone": "Notes App MVP",
+  "description": "Build a simple note-taking mobile application with React Native/Expo demonstrating the complete blueprint workflow",
+  "tasks": [
+    {
+      "title": "Setup React Native project structure",
+      "description": "Configure React Native/Expo project with proper organization and navigation.\n\n## Tasks\n- Setup React Navigation with stack navigator\n- Create screens and components directories\n- Configure TypeScript strict mode\n- Add global styles and theme\n- Setup SafeAreaView for iOS notch handling",
+      "acceptanceCriteria": [
+        "Navigation working between screens",
+        "Directory structure properly organized",
+        "TypeScript compiles without errors",
+        "App runs on iOS and Android",
+        "SafeAreaView handles device notches correctly"
+      ],
+      "priority": "high",
+      "type": "feature",
+      "platform": "mobile",
+      "dependencies": []
+    },
+    {
+      "title": "Create Note data model with AsyncStorage",
+      "description": "Define Note interface and implement AsyncStorage for data persistence.\n\n## Implementation\n- Define Note interface (id, title, content, createdAt, updatedAt)\n- Setup AsyncStorage helpers\n- Create CRUD utility functions (create, read, update, delete)\n- Add sample data for testing\n- Implement data migration helpers",
+      "acceptanceCriteria": [
+        "Note interface properly typed",
+        "AsyncStorage saves and retrieves data correctly",
+        "CRUD operations work reliably",
+        "Data persists across app restarts",
+        "Error handling for storage failures"
+      ],
+      "priority": "high",
+      "type": "feature",
+      "platform": "mobile",
+      "dependencies": [1]
+    },
+    {
+      "title": "Build Note list screen with FlatList",
+      "description": "Create the main screen displaying all notes using FlatList.\n\n## Components\n- NoteListScreen with FlatList\n- NoteItem component with title and preview\n- EmptyState component (when no notes)\n- Pull-to-refresh functionality\n- Swipe actions (delete, edit)",
+      "acceptanceCriteria": [
+        "FlatList renders notes efficiently",
+        "Pull-to-refresh works correctly",
+        "Swipe actions respond properly",
+        "Empty state displays when no notes",
+        "Smooth scrolling performance",
+        "Handles long lists (100+ items) well"
+      ],
+      "priority": "high",
+      "type": "feature",
+      "platform": "mobile",
+      "dependencies": [2]
+    },
+    {
+      "title": "Add create/edit/delete Note functionality",
+      "description": "Implement full CRUD operations for notes with native mobile UX.\n\n## Features\n- NoteEditor screen with TextInput\n- Create new note button (FloatingActionButton)\n- Edit existing note navigation\n- Delete with native confirmation dialog\n- Auto-save on navigation\n- Keyboard handling (dismiss on scroll)",
+      "acceptanceCriteria": [
+        "Can create new notes",
+        "Can edit existing notes",
+        "Can delete notes with confirmation",
+        "Auto-save works reliably",
+        "Keyboard doesn't block content",
+        "Back button saves changes",
+        "Native confirmation dialogs on Android/iOS"
+      ],
+      "priority": "high",
+      "type": "feature",
+      "platform": "mobile",
+      "dependencies": [2, 3]
+    },
+    {
+      "title": "Add note search and filtering",
+      "description": "Implement search functionality with mobile-optimized UX.\n\n## Implementation\n- Search bar in header\n- Real-time search (debounced)\n- Filter by date (newest/oldest)\n- Clear search button\n- Search results count\n- Highlight search terms in results",
+      "acceptanceCriteria": [
+        "Search filters notes in real-time",
+        "Search is performant (debounced)",
+        "Date sorting works correctly",
+        "Clear button resets search",
+        "Results count updates accurately",
+        "Keyboard search button triggers search",
+        "Works offline with cached data"
+      ],
+      "priority": "medium",
+      "type": "feature",
+      "platform": "mobile",
+      "dependencies": [2, 3, 4]
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "title": "Setup React Native project structure",
+  "body": "## Description\n\nConfigure React Native/Expo project with proper organization and navigation.\n\n## Tasks\n\n- Setup React Navigation with stack navigator\n- Create screens and components directories\n- Configure TypeScript strict mode\n- Add global styles and theme\n- Setup SafeAreaView for iOS notch handling\n\n## Acceptance Criteria\n\n- [ ] Navigation working between screens\n- [ ] Directory structure properly organized\n- [ ] TypeScript compiles without errors\n- [ ] App runs on iOS and Android\n- [ ] SafeAreaView handles device notches correctly\n\n## Type\n\nFeature\n\n## Platform\n\nMobile\n\n## Priority\n\nHigh\n\n---\n\n_Created by claude-plan-to-issues workflow_\n_Milestone: Notes App MVP_",
+  "labels": [
+    "claude-code",
+    "status:ready",
+    "type:feature",
+    "platform:mobile",
+    "priority:high"
+  ],
+  "milestone": "Notes App MVP",
+  "assignees": [],
+  "projects": ["Notes App MVP"]
+}
