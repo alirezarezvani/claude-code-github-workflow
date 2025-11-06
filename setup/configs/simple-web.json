@@ -1,0 +1,50 @@
+{
+  "name": "Simple Web Configuration",
+  "description": "Minimal setup for solo web developers - feature branches directly to main",
+  "projectType": "web",
+  "branchingStrategy": "simple",
+  "branches": ["main"],
+  "workflows": {
+    "enabled": [
+      "bootstrap",
+      "reusable-pr-checks",
+      "pr-into-dev",
+      "claude-plan-to-issues",
+      "create-branch-on-issue",
+      "pr-status-sync",
+      "release-status-sync"
+    ],
+    "disabled": ["dev-to-main"]
+  },
+  "labels": {
+    "status": ["status:ready", "status:in-progress", "status:in-review", "status:to-deploy"],
+    "type": ["type:feature", "type:fix", "type:hotfix", "type:docs", "type:refactor", "type:test"],
+    "platform": ["platform:web"],
+    "priority": ["priority:critical", "priority:high", "priority:medium", "priority:low"]
+  },
+  "options": {
+    "mobile_check": false,
+    "integration_tests": false,
+    "node_version": "20",
+    "pnpm_version": "9",
+    "max_tasks_per_plan": 10,
+    "rate_limit_threshold": 50,
+    "branch_protection": {
+      "main": {
+        "required_approving_reviews": 1,
+        "enforce_admins": true,
+        "required_linear_history": true
+      }
+    }
+  },
+  "secrets_required": [
+    "PROJECT_URL",
+    "ANTHROPIC_API_KEY"
+  ],
+  "recommended_for": [
+    "Solo developers",
+    "Small personal projects",
+    "Fast iteration cycles",
+    "Learning and experimentation"
+  ]
+}

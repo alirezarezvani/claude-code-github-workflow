@@ -1,0 +1,117 @@
+{
+  "name": "Custom Configuration Template",
+  "description": "Template for creating your own custom configuration - copy and modify as needed",
+  "projectType": "web|mobile|fullstack",
+  "branchingStrategy": "simple|standard|complex",
+  "branches": ["main", "dev", "staging"],
+  "workflows": {
+    "enabled": [
+      "bootstrap",
+      "reusable-pr-checks",
+      "pr-into-dev",
+      "dev-to-main",
+      "claude-plan-to-issues",
+      "create-branch-on-issue",
+      "pr-status-sync",
+      "release-status-sync"
+    ],
+    "disabled": [],
+    "_comment": "List workflow names to disable here"
+  },
+  "labels": {
+    "status": [
+      "status:ready",
+      "status:in-progress",
+      "status:in-review",
+      "status:in-testing",
+      "status:to-deploy"
+    ],
+    "type": [
+      "type:feature",
+      "type:fix",
+      "type:hotfix",
+      "type:docs",
+      "type:refactor",
+      "type:test",
+      "type:security",
+      "type:performance"
+    ],
+    "platform": [
+      "platform:web",
+      "platform:backend",
+      "platform:mobile",
+      "platform:ios",
+      "platform:android",
+      "platform:fullstack"
+    ],
+    "priority": [
+      "priority:critical",
+      "priority:high",
+      "priority:medium",
+      "priority:low"
+    ],
+    "_comment": "Add custom labels here"
+  },
+  "options": {
+    "mobile_check": false,
+    "integration_tests": true,
+    "node_version": "20",
+    "pnpm_version": "9",
+    "max_tasks_per_plan": 10,
+    "rate_limit_threshold": 50,
+    "path_filters": {
+      "_comment": "Define path filters for your monorepo",
+      "frontend": ["src/**", "public/**"],
+      "backend": ["server/**", "api/**"],
+      "shared": ["shared/**", "packages/**"]
+    },
+    "branch_protection": {
+      "main": {
+        "required_approving_reviews": 1,
+        "enforce_admins": true,
+        "required_linear_history": true,
+        "allow_force_pushes": false,
+        "allow_deletions": false,
+        "required_status_checks": ["lint", "test", "build"]
+      },
+      "dev": {
+        "required_approving_reviews": 1,
+        "enforce_admins": false,
+        "required_linear_history": true,
+        "allow_force_pushes": false
+      },
+      "_comment": "Add more branches as needed"
+    },
+    "custom_settings": {
+      "_comment": "Add your own custom settings here",
+      "example": "value"
+    }
+  },
+  "secrets_required": [
+    "PROJECT_URL",
+    "ANTHROPIC_API_KEY"
+  ],
+  "secrets_optional": [
+    "SLACK_WEBHOOK_URL",
+    "DISCORD_WEBHOOK",
+    "JIRA_API_TOKEN",
+    "VERCEL_TOKEN",
+    "NETLIFY_AUTH_TOKEN"
+  ],
+  "recommended_for": [
+    "Custom workflows",
+    "Specific team requirements",
+    "Experimental setups"
+  ],
+  "_usage": {
+    "instructions": [
+      "1. Copy this file to a new JSON file (e.g., my-config.json)",
+      "2. Modify values to match your requirements",
+      "3. Remove all _comment and _usage fields",
+      "4. Validate JSON syntax",
+      "5. Use with: ./setup/wizard.sh --config my-config.json (future feature)"
+    ],
+    "validation": "Ensure all JSON is valid before use",
+    "documentation": "See docs/CUSTOMIZATION.md for detailed options"
+  }
+}

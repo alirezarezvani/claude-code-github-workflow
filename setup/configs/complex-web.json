@@ -1,0 +1,66 @@
+{
+  "name": "Complex Web Configuration",
+  "description": "Enterprise setup with multiple environments - feature → dev → staging → main",
+  "projectType": "web",
+  "branchingStrategy": "complex",
+  "branches": ["main", "dev", "staging"],
+  "workflows": {
+    "enabled": [
+      "bootstrap",
+      "reusable-pr-checks",
+      "pr-into-dev",
+      "dev-to-main",
+      "claude-plan-to-issues",
+      "create-branch-on-issue",
+      "pr-status-sync",
+      "release-status-sync"
+    ],
+    "disabled": []
+  },
+  "labels": {
+    "status": ["status:ready", "status:in-progress", "status:in-review", "status:in-testing", "status:to-deploy"],
+    "type": ["type:feature", "type:fix", "type:hotfix", "type:docs", "type:refactor", "type:test", "type:security"],
+    "platform": ["platform:web"],
+    "priority": ["priority:critical", "priority:high", "priority:medium", "priority:low"]
+  },
+  "options": {
+    "mobile_check": false,
+    "integration_tests": true,
+    "node_version": "20",
+    "pnpm_version": "9",
+    "max_tasks_per_plan": 10,
+    "rate_limit_threshold": 100,
+    "branch_protection": {
+      "main": {
+        "required_approving_reviews": 2,
+        "enforce_admins": true,
+        "required_linear_history": true,
+        "allow_force_pushes": false,
+        "required_status_checks": ["lint", "test", "build-prod", "smoke-tests"]
+      },
+      "staging": {
+        "required_approving_reviews": 1,
+        "enforce_admins": false,
+        "required_linear_history": true,
+        "allow_force_pushes": false,
+        "required_status_checks": ["lint", "test"]
+      },
+      "dev": {
+        "required_approving_reviews": 1,
+        "enforce_admins": false,
+        "required_linear_history": true,
+        "allow_force_pushes": false
+      }
+    }
+  },
+  "secrets_required": [
+    "PROJECT_URL",
+    "ANTHROPIC_API_KEY"
+  ],
+  "recommended_for": [
+    "Enterprise teams (10+ developers)",
+    "Mission-critical applications",
+    "Multiple deployment environments",
+    "Maximum safety and compliance"
+  ]
+}
