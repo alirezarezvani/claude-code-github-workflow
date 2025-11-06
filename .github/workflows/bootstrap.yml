@@ -1,0 +1,386 @@
+# ─────────────────────────────────────────────────────────────────
+# Bootstrap Workflow
+# ─────────────────────────────────────────────────────────────────
+# One-time repository setup that creates all required labels,
+# validates project board configuration, and verifies secrets.
+#
+# Trigger: Manual only (workflow_dispatch)
+# Idempotent: Safe to run multiple times
+#
+# Author: Alireza Rezvani
+# Date: 2025-11-06
+# ─────────────────────────────────────────────────────────────────
+
+name: Bootstrap Repository
+
+on:
+  workflow_dispatch:
+    inputs:
+      create_milestone:
+        description: 'Create initial milestone (optional)'
+        required: false
+        type: boolean
+        default: false
+      milestone_title:
+        description: 'Milestone title (if creating)'
+        required: false
+        type: string
+        default: 'Sprint 1'
+      milestone_due_date:
+        description: 'Milestone due date (YYYY-MM-DD format, optional)'
+        required: false
+        type: string
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+jobs:
+  bootstrap:
+    name: Bootstrap Repository
+    runs-on: ubuntu-latest
+
+    steps:
+      # ─────────────────────────────────────────────────────────────
+      # Step 1: Checkout Repository
+      # ─────────────────────────────────────────────────────────────
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # ─────────────────────────────────────────────────────────────
+      # Step 2: Validate Required Secrets
+      # ─────────────────────────────────────────────────────────────
+      - name: Validate required secrets
+        id: validate-secrets
+        run: |
+          echo "🔍 Validating required secrets..."
+
+          SECRETS_VALID=true
+          MISSING_SECRETS=()
+
+          # Check ANTHROPIC_API_KEY
+          if [[ -z "${{ secrets.ANTHROPIC_API_KEY }}" ]]; then
+            echo "❌ ANTHROPIC_API_KEY is not set"
+            MISSING_SECRETS+=("ANTHROPIC_API_KEY")
+            SECRETS_VALID=false
+          else
+            echo "✅ ANTHROPIC_API_KEY is set"
+          fi
+
+          # Check PROJECT_URL
+          if [[ -z "${{ secrets.PROJECT_URL }}" ]]; then
+            echo "❌ PROJECT_URL is not set"
+            MISSING_SECRETS+=("PROJECT_URL")
+            SECRETS_VALID=false
+          else
+            echo "✅ PROJECT_URL is set: ${{ secrets.PROJECT_URL }}"
+          fi
+
+          # GITHUB_TOKEN is automatically provided
+          echo "✅ GITHUB_TOKEN is automatically provided"
+
+          if [[ "$SECRETS_VALID" == "false" ]]; then
+            echo ""
+            echo "⚠️  Missing required secrets:"
+            for secret in "${MISSING_SECRETS[@]}"; do
+              echo "   - $secret"
+            done
+            echo ""
+            echo "Please add these secrets in repository settings:"
+            echo "Settings → Secrets and variables → Actions → New repository secret"
+            exit 1
+          fi
+
+          echo "✅ All required secrets are configured"
+          echo "secrets-valid=true" >> $GITHUB_OUTPUT
+
+      # ─────────────────────────────────────────────────────────────
+      # Step 3: Create Required Labels
+      # ─────────────────────────────────────────────────────────────
+      - name: Create required labels
+        id: create-labels
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          echo "🏷️  Creating required labels..."
+
+          CREATED_COUNT=0
+          SKIPPED_COUNT=0
+
+          # Function to create label (idempotent)
+          create_label() {
+            local name=$1
+            local description=$2
+            local color=$3
+
+            # Check if label exists
+            if gh label list --json name --jq ".[].name" | grep -q "^${name}$"; then
+              echo "⏭️  Label '$name' already exists - skipping"
+              ((SKIPPED_COUNT++))
+            else
+              gh label create "$name" --description "$description" --color "$color"
+              echo "✅ Created label: $name"
+              ((CREATED_COUNT++))
+            fi
+          }
+
+          echo ""
+          echo "📊 Status Labels:"
+          create_label "status:to-triage" "Needs triage and review" "e3e3e3"
+          create_label "status:ready" "Ready to start work" "0e8a16"
+          create_label "status:in-progress" "Currently being worked on" "fbca04"
+          create_label "status:in-review" "Under code review" "d4c5f9"
+          create_label "status:to-deploy" "Ready for deployment" "1d76db"
+
+          echo ""
+          echo "🔖 Type Labels:"
+          create_label "type:feature" "New feature or functionality" "a2eeef"
+          create_label "type:fix" "Bug fix" "d73a4a"
+          create_label "type:hotfix" "Critical fix for production" "b60205"
+          create_label "type:docs" "Documentation update" "0075ca"
+          create_label "type:refactor" "Code refactoring" "5319e7"
+          create_label "type:test" "Test addition or update" "bfd4f2"
+
+          echo ""
+          echo "🌐 Platform Labels:"
+          create_label "platform:web" "Web application" "c5def5"
+          create_label "platform:mobile" "Mobile application (iOS/Android)" "f9d0c4"
+          create_label "platform:fullstack" "Full-stack (web + backend)" "d4c5f9"
+
+          echo ""
+          echo "🚦 Priority Labels:"
+          create_label "priority:critical" "Critical priority (blocking)" "b60205"
+          create_label "priority:high" "High priority" "ff9800"
+          create_label "priority:medium" "Medium priority" "fbca04"
+          create_label "priority:low" "Low priority" "c5def5"
+
+          echo ""
+          echo "🤖 Meta Labels:"
+          create_label "claude-code" "Automated by Claude Code" "0366d6"
+          create_label "automerge" "Auto-merge when checks pass" "128a0c"
+          create_label "dependencies" "Dependency update" "0366d6"
+
+          echo ""
+          echo "📈 Summary:"
+          echo "   Created: $CREATED_COUNT labels"
+          echo "   Skipped (already exist): $SKIPPED_COUNT labels"
+          echo "   Total: $((CREATED_COUNT + SKIPPED_COUNT)) labels"
+
+          echo "created-count=$CREATED_COUNT" >> $GITHUB_OUTPUT
+          echo "skipped-count=$SKIPPED_COUNT" >> $GITHUB_OUTPUT
+
+      # ─────────────────────────────────────────────────────────────
+      # Step 4: Validate Project Board
+      # ─────────────────────────────────────────────────────────────
+      - name: Validate project board configuration
+        id: validate-project
+        if: steps.validate-secrets.outputs.secrets-valid == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PROJECT_URL: ${{ secrets.PROJECT_URL }}
+        run: |
+          echo "📋 Validating project board configuration..."
+
+          # Extract owner and project number from URL
+          # Format: https://github.com/users/{owner}/projects/{number}
+          # or: https://github.com/orgs/{org}/projects/{number}
+
+          if [[ ! "$PROJECT_URL" =~ github\.com/(users|orgs)/([^/]+)/projects/([0-9]+) ]]; then
+            echo "❌ Invalid PROJECT_URL format"
+            echo "Expected: https://github.com/users/{owner}/projects/{number}"
+            echo "      or: https://github.com/orgs/{org}/projects/{number}"
+            exit 1
+          fi
+
+          PROJECT_TYPE="${BASH_REMATCH[1]}"
+          OWNER="${BASH_REMATCH[2]}"
+          PROJECT_NUMBER="${BASH_REMATCH[3]}"
+
+          echo "✅ Project URL parsed successfully:"
+          echo "   Type: $PROJECT_TYPE"
+          echo "   Owner: $OWNER"
+          echo "   Number: $PROJECT_NUMBER"
+
+          # Query project details via GraphQL
+          PROJECT_QUERY=$(cat <<EOF
+          {
+            ${PROJECT_TYPE == "users" ? "user" : "organization"}(login: "$OWNER") {
+              projectV2(number: $PROJECT_NUMBER) {
+                id
+                title
+                field(name: "Status") {
+                  ... on ProjectV2SingleSelectField {
+                    id
+                    options {
+                      id
+                      name
+                    }
+                  }
+                }
+              }
+            }
+          }
+          EOF
+          )
+
+          PROJECT_DATA=$(gh api graphql -f query="$PROJECT_QUERY")
+
+          if [[ $? -ne 0 ]]; then
+            echo "❌ Failed to query project board"
+            echo "Please verify:"
+            echo "  1. PROJECT_URL is correct"
+            echo "  2. GitHub token has 'project' permissions"
+            echo "  3. Project board exists and is accessible"
+            exit 1
+          fi
+
+          PROJECT_ID=$(echo "$PROJECT_DATA" | jq -r '.data.user.projectV2.id // .data.organization.projectV2.id')
+          PROJECT_TITLE=$(echo "$PROJECT_DATA" | jq -r '.data.user.projectV2.title // .data.organization.projectV2.title')
+
+          if [[ "$PROJECT_ID" == "null" || -z "$PROJECT_ID" ]]; then
+            echo "❌ Project board not found at $PROJECT_URL"
+            exit 1
+          fi
+
+          echo "✅ Project board found: $PROJECT_TITLE"
+          echo "   ID: $PROJECT_ID"
+
+          # Validate Status field exists
+          STATUS_FIELD_ID=$(echo "$PROJECT_DATA" | jq -r '.data.user.projectV2.field.id // .data.organization.projectV2.field.id')
+
+          if [[ "$STATUS_FIELD_ID" == "null" || -z "$STATUS_FIELD_ID" ]]; then
+            echo "❌ 'Status' field not found in project board"
+            echo "Please create a 'Status' field with these options:"
+            echo "  - To triage"
+            echo "  - Backlog"
+            echo "  - Ready"
+            echo "  - In Progress"
+            echo "  - In Review"
+            echo "  - To Deploy"
+            echo "  - Done"
+            exit 1
+          fi
+
+          echo "✅ Status field found"
+
+          # List available status options
+          echo ""
+          echo "📊 Available status options:"
+          echo "$PROJECT_DATA" | jq -r '.data.user.projectV2.field.options[]?.name // .data.organization.projectV2.field.options[]?.name' | while read -r option; do
+            echo "   - $option"
+          done
+
+          echo ""
+          echo "💡 Recommended status options (customize in your project):"
+          echo "   - To triage (for manual tasks)"
+          echo "   - Backlog"
+          echo "   - Ready (for automated tasks)"
+          echo "   - In Progress"
+          echo "   - In Review"
+          echo "   - To Deploy"
+          echo "   - Done"
+
+          echo "project-valid=true" >> $GITHUB_OUTPUT
+          echo "project-id=$PROJECT_ID" >> $GITHUB_OUTPUT
+          echo "project-title=$PROJECT_TITLE" >> $GITHUB_OUTPUT
+
+      # ─────────────────────────────────────────────────────────────
+      # Step 5: Create Initial Milestone (Optional)
+      # ─────────────────────────────────────────────────────────────
+      - name: Create initial milestone
+        id: create-milestone
+        if: inputs.create_milestone == true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          echo "🎯 Creating initial milestone..."
+
+          MILESTONE_TITLE="${{ inputs.milestone_title }}"
+          MILESTONE_DUE="${{ inputs.milestone_due_date }}"
+
+          # Check if milestone already exists
+          if gh api repos/${{ github.repository }}/milestones --jq ".[].title" | grep -q "^${MILESTONE_TITLE}$"; then
+            echo "⏭️  Milestone '$MILESTONE_TITLE' already exists - skipping"
+            MILESTONE_NUMBER=$(gh api repos/${{ github.repository }}/milestones --jq ".[] | select(.title==\"$MILESTONE_TITLE\") | .number")
+            echo "milestone-created=false" >> $GITHUB_OUTPUT
+          else
+            # Create milestone
+            if [[ -n "$MILESTONE_DUE" ]]; then
+              gh api repos/${{ github.repository }}/milestones \
+                -f title="$MILESTONE_TITLE" \
+                -f due_on="${MILESTONE_DUE}T23:59:59Z" \
+                -f description="Initial milestone created by bootstrap workflow"
+            else
+              gh api repos/${{ github.repository }}/milestones \
+                -f title="$MILESTONE_TITLE" \
+                -f description="Initial milestone created by bootstrap workflow"
+            fi
+
+            MILESTONE_NUMBER=$(gh api repos/${{ github.repository }}/milestones --jq ".[] | select(.title==\"$MILESTONE_TITLE\") | .number")
+            echo "✅ Created milestone: $MILESTONE_TITLE (#$MILESTONE_NUMBER)"
+            echo "milestone-created=true" >> $GITHUB_OUTPUT
+          fi
+
+          echo "milestone-number=$MILESTONE_NUMBER" >> $GITHUB_OUTPUT
+          echo "milestone-title=$MILESTONE_TITLE" >> $GITHUB_OUTPUT
+
+      # ─────────────────────────────────────────────────────────────
+      # Step 6: Generate Summary Report
+      # ─────────────────────────────────────────────────────────────
+      - name: Generate summary report
+        if: always()
+        run: |
+          echo "# 🚀 Bootstrap Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          echo "## ✅ Validation Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Component | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|-----------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Required Secrets | ${{ steps.validate-secrets.outputs.secrets-valid == 'true' && '✅ Valid' || '❌ Invalid' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Project Board | ${{ steps.validate-project.outputs.project-valid == 'true' && '✅ Valid' || '⚠️ Check logs' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          echo "## 🏷️ Labels" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Created**: ${{ steps.create-labels.outputs.created-count }} labels" >> $GITHUB_STEP_SUMMARY
+          echo "- **Skipped**: ${{ steps.create-labels.outputs.skipped-count }} labels (already exist)" >> $GITHUB_STEP_SUMMARY
+          echo "- **Total**: $((${{ steps.create-labels.outputs.created-count }} + ${{ steps.create-labels.outputs.skipped-count }})) labels" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          if [[ "${{ steps.validate-project.outputs.project-valid }}" == "true" ]]; then
+            echo "## 📋 Project Board" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "- **Title**: ${{ steps.validate-project.outputs.project-title }}" >> $GITHUB_STEP_SUMMARY
+            echo "- **URL**: ${{ secrets.PROJECT_URL }}" >> $GITHUB_STEP_SUMMARY
+            echo "- **Status**: ✅ Validated" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          if [[ "${{ inputs.create_milestone }}" == "true" ]]; then
+            echo "## 🎯 Milestone" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            if [[ "${{ steps.create-milestone.outputs.milestone-created }}" == "true" ]]; then
+              echo "- **Created**: ${{ steps.create-milestone.outputs.milestone-title }} (#${{ steps.create-milestone.outputs.milestone-number }})" >> $GITHUB_STEP_SUMMARY
+            else
+              echo "- **Skipped**: ${{ steps.create-milestone.outputs.milestone-title }} (already exists)" >> $GITHUB_STEP_SUMMARY
+            fi
+            echo "" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          echo "## 🎉 Next Steps" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Your repository is now bootstrapped! You can:" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "1. **Create your first issue** using the \`plan-task\` or \`manual-task\` template" >> $GITHUB_STEP_SUMMARY
+          echo "2. **Label it with** \`claude-code\` + \`status:ready\` to trigger auto-branch creation" >> $GITHUB_STEP_SUMMARY
+          echo "3. **Start working** on your feature branches" >> $GITHUB_STEP_SUMMARY
+          echo "4. **Create PRs** to \`dev\` branch (or \`main\` if using simple strategy)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "---" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "_Bootstrap completed at $(date -u '+%Y-%m-%d %H:%M:%S UTC')_" >> $GITHUB_STEP_SUMMARY
+
+          echo ""
+          echo "✅ Bootstrap workflow completed successfully!"
