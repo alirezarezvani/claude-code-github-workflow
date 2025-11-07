@@ -1,17 +1,17 @@
 # ─────────────────────────────────────────────────────────────────
 # PR into Dev Workflow
 # ─────────────────────────────────────────────────────────────────
-# Validates feature/fix/hotfix pull requests before merging to dev.
+# Validates pull requests before merging to dev.
 #
 # Validations:
-# - Source branch must be feature/*, fix/*, or hotfix/*
+# - Source branch must be feature/*, fix/*, hotfix/*, or test/*
 # - PR title must follow conventional commit format
 # - At least one issue must be linked
 # - All quality gates must pass
 # - Fork PRs run read-only checks
 #
 # Author: Alireza Rezvani
-# Date: 2025-11-06
+# Date: 2025-11-07
 # ─────────────────────────────────────────────────────────────────
 
 name: PR into Dev
@@ -77,13 +77,14 @@ jobs:
           echo "🔍 Validating branch name: $BRANCH_NAME"
 
           # Check if branch follows naming convention
-          if [[ ! "$BRANCH_NAME" =~ ^(feature|fix|hotfix)/ ]]; then
+          if [[ ! "$BRANCH_NAME" =~ ^(feature|fix|hotfix|test)/ ]]; then
             echo "❌ Invalid branch name: $BRANCH_NAME"
             echo ""
             echo "Branch must start with one of:"
             echo "  - feature/  (for new features)"
             echo "  - fix/      (for bug fixes)"
             echo "  - hotfix/   (for critical fixes)"
+            echo "  - test/     (for workflow testing)"
             echo ""
             echo "Example: feature/issue-123-add-user-auth"
             exit 1
