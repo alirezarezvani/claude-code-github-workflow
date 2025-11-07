@@ -59,11 +59,9 @@ jobs:
           SECRETS_VALID=true
           MISSING_SECRETS=()
 
-          # Check ANTHROPIC_API_KEY
+          # Check ANTHROPIC_API_KEY (optional - not needed with Claude Code subscription)
           if [[ -z "${{ secrets.ANTHROPIC_API_KEY }}" ]]; then
-            echo "❌ ANTHROPIC_API_KEY is not set"
-            MISSING_SECRETS+=("ANTHROPIC_API_KEY")
-            SECRETS_VALID=false
+            echo "ℹ️  ANTHROPIC_API_KEY is not set (optional with Claude Code subscription)"
           else
             echo "✅ ANTHROPIC_API_KEY is set"
           fi
