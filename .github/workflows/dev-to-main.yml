@@ -47,7 +47,15 @@ jobs:
       - name: Validate source is dev branch
         run: |
           SOURCE_BRANCH="${{ github.head_ref }}"
-          echo "🔍 Validating source branch: $SOURCE_BRANCH"
+          ACTOR="${{ github.actor }}"
+          echo "🔍 Validating source branch: $SOURCE_BRANCH (Actor: $ACTOR)"
+
+          # Allow dependabot PRs to bypass dev branch requirement
+          if [[ "$ACTOR" == "dependabot[bot]" ]] || [[ "$SOURCE_BRANCH" == dependabot/* ]]; then
+            echo "✅ Dependabot PR - skipping source branch validation"
+            echo "   Dependabot PRs are allowed to merge directly to main"
+            exit 0
+          fi
 
           if [[ "$SOURCE_BRANCH" != "dev" ]]; then
             echo "❌ Invalid source branch: $SOURCE_BRANCH"

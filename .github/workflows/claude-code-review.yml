@@ -12,8 +12,11 @@ on:
 
 jobs:
   claude-review:
+    # Skip for dependabot PRs (no need for AI review of dependency updates)
+    if: github.actor != 'dependabot[bot]'
+
     # Optional: Filter by PR author
-    # if: |
+    # Additional filters can be added:
     #   github.event.pull_request.user.login == 'external-contributor' ||
     #   github.event.pull_request.user.login == 'new-developer' ||
     #   github.event.pull_request.author_association == 'FIRST_TIME_CONTRIBUTOR'
@@ -26,12 +29,27 @@ jobs:
       id-token: write
 
     steps:
+      - name: Check if Claude Code OAuth token is configured
+        id: check-token
+        run: |
+          if [ -z "${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}" ]; then
+            echo "⚠️ CLAUDE_CODE_OAUTH_TOKEN secret is not configured"
+            echo "   Skipping Claude Code Review"
+            echo "   To enable: Add CLAUDE_CODE_OAUTH_TOKEN to repository secrets"
+            echo "skip=true" >> $GITHUB_OUTPUT
+          else
+            echo "✅ CLAUDE_CODE_OAUTH_TOKEN is configured"
+            echo "skip=false" >> $GITHUB_OUTPUT
+          fi
+
       - name: Checkout repository
+        if: steps.check-token.outputs.skip != 'true'
         uses: actions/checkout@v4
         with:
           fetch-depth: 1
 
       - name: Run Claude Code Review
+        if: steps.check-token.outputs.skip != 'true'
         id: claude-review
         uses: anthropics/claude-code-action@v1
         with:
