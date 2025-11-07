@@ -190,31 +190,42 @@ The blueprint supports all three strategies out of the box. Choose during setup.
 
 ---
 
-## 🔀 Special Branch Patterns
+## 🔀 Branch Flow Rules
 
-The `Release to Main` workflow allows specific branch patterns to merge directly to `main`:
+The `Release to Main` workflow enforces the following rules:
+
+### Standard Flow (Required for Most Branches)
+```
+feature/* → dev → main
+fix/* → dev → main
+test/* → dev → main
+```
+
+All feature, fix, and test branches **must** merge to `dev` first, then `dev` merges to `main`.
+
+### Special Exceptions (Direct to Main)
 
 | Pattern | Purpose | Use Case |
 |---------|---------|----------|
-| `dev` | Production releases | Standard release flow (dev → main) |
-| `test/*` | Workflow validation | Testing CI/CD changes (e.g., test/workflow-validation) |
-| `release/*` | Hotfix releases | Emergency fixes bypassing dev (e.g., release/1.0.1) |
-| `dependabot/*` | Dependency updates | Automated dependency PRs |
+| `dev` | Production releases | Standard release flow (only dev can merge to main) |
+| `release/*` | Emergency hotfixes | Critical fixes bypassing dev (e.g., release/1.0.1-security) |
+| `dependabot/*` | Dependency updates | Automated dependency update PRs |
 
 **Example:**
 ```bash
-# Test workflow changes
-git checkout -b test/new-ci-feature
-git push origin test/new-ci-feature
-# PR to main will run all release gates
+# Standard flow (most common)
+git checkout -b feature/new-feature
+git push origin feature/new-feature
+# Create PR: feature/new-feature → dev
+# After merge, create PR: dev → main
 
-# Emergency hotfix
+# Emergency hotfix (rare)
 git checkout -b release/1.0.1-security-patch
 git push origin release/1.0.1-security-patch
-# PR to main with fast-track release gates
+# Create PR: release/1.0.1-security-patch → main (bypasses dev)
 ```
 
-All other branches must follow the standard flow (feature/* → dev → main).
+**Important**: Attempting to merge feature/*, fix/*, or test/* branches directly to `main` will fail validation.
 
 ---
 

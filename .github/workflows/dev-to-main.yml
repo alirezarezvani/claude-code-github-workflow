@@ -4,17 +4,18 @@
 # Validates release pull requests before merging to main (production).
 #
 # Release Gates:
-# - Source must be dev, test/*, or release/* branches
+# - Source must be dev or release/* branches
 # - Production build must succeed
 # - Smoke tests must pass
 # - Security quick scan (informational only)
 # - Deployment readiness checklist
 #
 # Allowed source branches:
-# - dev: Production releases
-# - test/*: Workflow validation and testing
-# - release/*: Hotfix releases
+# - dev: Production releases (standard flow)
+# - release/*: Emergency hotfix releases
 # - dependabot/*: Automated dependency updates
+#
+# All other branches (feature/*, fix/*, test/*) must merge to dev first.
 #
 # Author: Alireza Rezvani
 # Date: 2025-11-06
@@ -67,20 +68,23 @@ jobs:
           fi
 
           # Allowlist: branches permitted to merge to main
-          # Includes: dev (production), test/* (validation), release/* (hotfixes)
-          ALLOWED_REGEX='^(dev|test/.*|release/.*)$'
+          # Only: dev (production), release/* (hotfixes)
+          # All other branches (feature/*, fix/*, test/*) must go through dev first
+          ALLOWED_REGEX='^(dev|release/.*)$'
 
           if [[ ! $SOURCE_BRANCH =~ $ALLOWED_REGEX ]]; then
             echo "❌ Invalid source branch: $SOURCE_BRANCH"
             echo ""
-            echo "Only branches matching the allowlist may be merged to 'main'."
+            echo "Only dev and release/* branches may be merged to 'main'."
             echo ""
             echo "Allowed patterns:"
             echo "  - dev (production releases)"
-            echo "  - test/* (workflow validation)"
-            echo "  - release/* (hotfix releases)"
+            echo "  - release/* (emergency hotfixes)"
             echo ""
             echo "Got: $SOURCE_BRANCH → main"
+            echo ""
+            echo "All other branches (feature/*, fix/*, test/*) must merge to dev first:"
+            echo "  $SOURCE_BRANCH → dev → main"
             echo ""
             echo "If using a different branching strategy, adjust ALLOWED_REGEX in this workflow."
             exit 1
