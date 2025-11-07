@@ -51,9 +51,12 @@ jobs:
           echo "🔍 Validating source branch: $SOURCE_BRANCH (Actor: $ACTOR)"
 
           # Allow dependabot PRs to bypass dev branch requirement
-          if [[ "$ACTOR" == "dependabot[bot]" ]] || [[ "$SOURCE_BRANCH" == dependabot/* ]]; then
-            echo "✅ Dependabot PR - skipping source branch validation"
+          # Check both actor name and branch name prefix
+          if [[ "$ACTOR" == "dependabot[bot]" ]] || [[ "$SOURCE_BRANCH" =~ ^dependabot/ ]]; then
+            echo "✅ Dependabot PR detected - skipping source branch validation"
             echo "   Dependabot PRs are allowed to merge directly to main"
+            echo "   Actor: $ACTOR"
+            echo "   Branch: $SOURCE_BRANCH"
             exit 0
           fi
 

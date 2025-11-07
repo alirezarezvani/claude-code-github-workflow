@@ -1,3 +1,25 @@
+# ─────────────────────────────────────────────────────────────────
+# Claude Code Review Workflow (OPTIONAL)
+# ─────────────────────────────────────────────────────────────────
+# This workflow provides AI-powered code review using Claude Code.
+#
+# ⚠️ SETUP REQUIRED:
+# This workflow requires the CLAUDE_CODE_OAUTH_TOKEN secret to be configured.
+# If the secret is not set, the workflow will be skipped automatically.
+#
+# To enable:
+# 1. Go to repository Settings > Secrets and variables > Actions
+# 2. Add a new secret: CLAUDE_CODE_OAUTH_TOKEN
+# 3. Get your token from: https://claude.com/settings/oauth-tokens
+#
+# Automatically skips:
+# - Dependabot PRs (no need for AI review of dependency updates)
+# - When CLAUDE_CODE_OAUTH_TOKEN is not configured
+#
+# Author: Alireza Rezvani
+# Date: 2025-11-06
+# ─────────────────────────────────────────────────────────────────
+
 name: Claude Code Review
 
 on:
@@ -13,7 +35,10 @@ on:
 jobs:
   claude-review:
     # Skip for dependabot PRs (no need for AI review of dependency updates)
-    if: github.actor != 'dependabot[bot]'
+    # Also skip if CLAUDE_CODE_OAUTH_TOKEN is not configured (optional feature)
+    if: |
+      github.actor != 'dependabot[bot]' &&
+      secrets.CLAUDE_CODE_OAUTH_TOKEN != ''
 
     # Optional: Filter by PR author
     # Additional filters can be added:
@@ -29,27 +54,12 @@ jobs:
       id-token: write
 
     steps:
-      - name: Check if Claude Code OAuth token is configured
-        id: check-token
-        run: |
-          if [ -z "${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}" ]; then
-            echo "⚠️ CLAUDE_CODE_OAUTH_TOKEN secret is not configured"
-            echo "   Skipping Claude Code Review"
-            echo "   To enable: Add CLAUDE_CODE_OAUTH_TOKEN to repository secrets"
-            echo "skip=true" >> $GITHUB_OUTPUT
-          else
-            echo "✅ CLAUDE_CODE_OAUTH_TOKEN is configured"
-            echo "skip=false" >> $GITHUB_OUTPUT
-          fi
-
       - name: Checkout repository
-        if: steps.check-token.outputs.skip != 'true'
         uses: actions/checkout@v4
         with:
           fetch-depth: 1
 
       - name: Run Claude Code Review
-        if: steps.check-token.outputs.skip != 'true'
         id: claude-review
         uses: anthropics/claude-code-action@v1
         with:
