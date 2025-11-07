@@ -448,6 +448,6 @@ And provides:
 
 *Empowering developers with world-class automation* 🚀
 
-Built with [Claude Code](https://claude.com/claude-code)
+Assisted By [Claude Code](https://claude.com/claude-code)
 
 </div>
