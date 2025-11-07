@@ -58,7 +58,9 @@ That's it! Your repository now has:
 - ✅ Slash commands available
 - ✅ Quality gates enabled
 
-**Next**: Read the [Quick Start Guide](docs/QUICK_START.md) for your first automated workflow.
+**Next Steps**:
+- 📖 [**GitHub Setup Guide**](GITHUB_SETUP.md) - Complete repository configuration (secrets, branch protection, project board)
+- 🚀 [Quick Start Guide](docs/QUICK_START.md) - Your first automated workflow
 
 ---
 
