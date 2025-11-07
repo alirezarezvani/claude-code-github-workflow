@@ -40,7 +40,7 @@ Before you begin, ensure you have:
 
 ### Step 1: Clone and Setup
 
-Copy this blueprint into your project:
+**Important**: This blueprint is a template. You need to use it in YOUR own repository.
 
 ```bash
 # Option A: Add to existing repository
@@ -51,10 +51,18 @@ cp -r .blueprint-temp/.claude/ .
 cp -r .blueprint-temp/setup/ .
 rm -rf .blueprint-temp
 
-# Option B: Start new project with blueprint
+# Option B: Clone template, then create your own repository
 git clone https://github.com/alirezarezvani/claude-code-github-workflow.git my-project
 cd my-project
+
+# Create your own GitHub repository
+gh repo create my-project --public --source=. --remote=origin
+
+# Or manually update git remote
+git remote set-url origin https://github.com/YOUR_USERNAME/YOUR_REPO.git
 ```
+
+**Note**: The setup wizard (see below) will detect if you're still pointing to the template repository and help you update it automatically.
 
 ### Step 2: Configure Secrets
 

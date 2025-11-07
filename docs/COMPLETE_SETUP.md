@@ -176,6 +176,36 @@ cp -r blueprint/setup/ ./setup/
 rm -rf blueprint
 ```
 
+#### Step 1.5: Configure Git Remote
+
+**CRITICAL**: The blueprint is a template. You must use it in YOUR own repository.
+
+**If you cloned the template directly**:
+```bash
+# Check current remote
+git remote get-url origin
+# If it shows: https://github.com/alirezarezvani/claude-code-github-workflow.git
+# You need to update it!
+
+# Option A: Create new GitHub repository and update remote
+gh repo create my-project --public --source=. --remote=origin
+
+# Option B: Manually update to existing repository
+git remote set-url origin https://github.com/YOUR_USERNAME/YOUR_REPO.git
+
+# Verify the change
+git remote get-url origin
+# Should show YOUR repository, not the template
+```
+
+**Why this matters**:
+- ❌ **Wrong**: Pushing to template repository (you don't have permission)
+- ✅ **Right**: Pushing to your own repository
+- The setup wizard will detect and help fix this automatically
+
+**If you copied files to existing repository**:
+- No action needed - your git remote is already correct ✅
+
 #### Step 2: Configure for Your Project Type
 
 **For Web Projects**:

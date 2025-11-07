@@ -191,6 +191,100 @@ check_prerequisites() {
 }
 
 # ─────────────────────────────────────────────────────────────────
+# Step 1.5: Repository Remote Setup
+# ─────────────────────────────────────────────────────────────────
+
+update_git_remote() {
+    log_step "Step 1.5: Repository Remote Setup"
+
+    # Get current remote URL
+    local current_remote=$(git remote get-url origin 2>/dev/null || echo "")
+
+    if [[ -z "$current_remote" ]]; then
+        log_error "No git remote 'origin' found"
+        log_info "This should not happen if prerequisites passed"
+        return 1
+    fi
+
+    log_info "Current remote: $current_remote"
+
+    # Check if pointing to template repository
+    local template_repo="alirezarezvani/claude-code-github-workflow"
+
+    if [[ "$current_remote" == *"$template_repo"* ]]; then
+        log_warning "Git remote is still pointing to the template repository!"
+        echo ""
+        echo "⚠️  You need to update the remote URL to YOUR repository."
+        echo ""
+        echo "This blueprint is a template - you should be using it in YOUR"
+        echo "own repository, not the original template repository."
+        echo ""
+
+        # Prompt for user's repository
+        echo "📋 Please provide your GitHub repository information:"
+        echo ""
+
+        local user_owner=""
+        local user_repo=""
+
+        while [[ -z "$user_owner" ]]; do
+            read -p "$(echo -e "${YELLOW}?${NC} Repository owner (your username or org): ")" user_owner
+            if [[ -z "$user_owner" ]]; then
+                log_error "Repository owner cannot be empty"
+            fi
+        done
+
+        while [[ -z "$user_repo" ]]; do
+            read -p "$(echo -e "${YELLOW}?${NC} Repository name: ")" user_repo
+            if [[ -z "$user_repo" ]]; then
+                log_error "Repository name cannot be empty"
+            fi
+        done
+
+        # Construct new remote URL (using HTTPS)
+        local new_remote="https://github.com/$user_owner/$user_repo.git"
+
+        echo ""
+        log_info "New remote URL: $new_remote"
+        echo ""
+
+        if ! confirm "Update git remote to this URL?"; then
+            log_warning "Git remote not updated."
+            echo ""
+            log_error "You MUST update the git remote before proceeding!"
+            echo ""
+            echo "To update manually, run:"
+            echo "  git remote set-url origin https://github.com/<owner>/<repo>.git"
+            echo ""
+            echo "Then run this wizard again."
+            return 1
+        fi
+
+        # Update remote URL
+        if git remote set-url origin "$new_remote"; then
+            log "Git remote updated successfully!"
+
+            # Verify the change
+            local updated_remote=$(git remote get-url origin)
+            log_info "Verified remote: $updated_remote"
+
+            # Update global variables
+            REPO_OWNER="$user_owner"
+            REPO_NAME="$user_repo"
+        else
+            log_error "Failed to update git remote"
+            return 1
+        fi
+    else
+        log "Git remote is already configured correctly"
+        log_info "Remote: $current_remote"
+    fi
+
+    echo ""
+    return 0
+}
+
+# ─────────────────────────────────────────────────────────────────
 # Step 2: Detect Project Type
 # ─────────────────────────────────────────────────────────────────
 
@@ -965,6 +1059,9 @@ main() {
 
     # Step 1: Check prerequisites
     check_prerequisites || exit 1
+
+    # Step 1.5: Update git remote if needed
+    update_git_remote || exit 1
 
     # Step 2: Detect project type
     detect_project_type

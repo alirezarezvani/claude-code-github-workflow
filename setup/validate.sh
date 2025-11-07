@@ -102,6 +102,54 @@ EOF
 }
 
 # ─────────────────────────────────────────────────────────────────
+# 0. Git Remote Validation
+# ─────────────────────────────────────────────────────────────────
+
+validate_git_remote() {
+    log_section "0. Checking Git Remote Configuration"
+
+    # Check if in git repository
+    if ! git rev-parse --git-dir &> /dev/null; then
+        log_fail "Not in a git repository"
+        return 1
+    fi
+
+    # Get current remote URL
+    local current_remote=$(git remote get-url origin 2>/dev/null || echo "")
+
+    if [[ -z "$current_remote" ]]; then
+        log_fail "No git remote 'origin' configured"
+        log_info "Configure with: git remote add origin <repo-url>"
+        return 1
+    fi
+
+    # Check if pointing to template repository
+    local template_repo="alirezarezvani/claude-code-github-workflow"
+
+    if [[ "$current_remote" == *"$template_repo"* ]]; then
+        log_fail "Git remote is still pointing to template repository!"
+        echo ""
+        echo -e "${RED}⚠️  CRITICAL: You are using the blueprint template repository directly!${NC}"
+        echo ""
+        echo "  Current remote: $current_remote"
+        echo ""
+        echo "  This will cause issues:"
+        echo "  • Cannot push changes (permission denied)"
+        echo "  • Secrets set on wrong repository"
+        echo "  • Workflows run on template, not your project"
+        echo ""
+        echo "  To fix, update git remote to YOUR repository:"
+        echo "  git remote set-url origin https://github.com/<your-username>/<your-repo>.git"
+        echo ""
+        echo "  Or run the setup wizard again: ./setup/wizard.sh"
+        echo ""
+    else
+        log_pass "Git remote configured correctly"
+        log_info "Remote: $current_remote"
+    fi
+}
+
+# ─────────────────────────────────────────────────────────────────
 # 1. Branch Validation
 # ─────────────────────────────────────────────────────────────────
 
@@ -618,6 +666,7 @@ main() {
     show_header
 
     # Run all validation checks
+    validate_git_remote
     validate_branches
     validate_secrets
     validate_workflows
