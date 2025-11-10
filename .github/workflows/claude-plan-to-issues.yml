@@ -135,7 +135,7 @@ jobs:
           echo "task-count=$TASK_COUNT" >> $GITHUB_OUTPUT
 
       - name: Upload plan JSON artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: validated-plan
           path: plan.json
@@ -374,7 +374,7 @@ jobs:
             core.setOutput('skipped-issues', JSON.stringify(skippedIssues));
 
       - name: Upload issue creation results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: issue-results
           path: |

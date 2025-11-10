@@ -141,7 +141,7 @@ jobs:
           fi
 
       - name: Upload production build
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: production-build
           path: |
@@ -202,7 +202,7 @@ jobs:
 
       - name: Upload smoke test results on failure
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: smoke-test-results
           path: |
