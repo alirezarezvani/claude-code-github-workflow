@@ -46,7 +46,7 @@ jobs:
       # Step 1: Checkout Repository
       # ─────────────────────────────────────────────────────────────
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       # ─────────────────────────────────────────────────────────────
       # Step 2: Validate Required Secrets
